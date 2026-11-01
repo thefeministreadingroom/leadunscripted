@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script><script src="uns-live.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pulse Survey Workshops</title>
+<link rel="icon" type="image/png" sizes="64x64" href="mark-64.png">
+<link rel="icon" type="image/png" sizes="32x32" href="mark-32.png">
+<link rel="apple-touch-icon" href="mark-256.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>.mobile-only{display:none}@media (max-width:1280px){.mobile-only{display:block}}</style>
+<style>
+/* Layout: the same editorial studio system as the home page; a diagnostic-report feel, with an example heatmap as the centrepiece */
+:root{
+  --linen:#F3F4EF; --paper:#FBFBF8; --stone:#E6E9E2; --ink:#0F2A2B; --ink-2:#17393A;
+  --body:#4B5A58; --on-ink:#F3F4EF; --on-ink-2:#B8CBC7; --line:#D8DDD6; --line-ink:#2E5354;
+  --saffron:#E3A63C; --saffron-deep:#A86F14; --saffron-wash:#F6E7C8;
+  --heat-low:#E9A69A; --heat-mid:#F3DDA6; --heat-high:#BFDCCB;
+  --display:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --sans:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --wrap:1180px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{margin:0;background:var(--linen);color:var(--ink);font:400 17px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+[hidden]{display:none!important}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--saffron);outline-offset:3px;border-radius:4px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:24px}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(46px,7vw,92px)}
+h2{font-size:clamp(36px,4.6vw,58px)}
+h3{font-size:clamp(24px,2.2vw,30px);line-height:1.15}
+p{margin:0}
+.eyebrow{font:600 12.5px/1.2 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--saffron-deep)}
+.stage .eyebrow{color:var(--saffron)}
+.lead{font-size:clamp(18px,1.7vw,21px);color:var(--body);max-width:60ch}
+.stage .lead{color:var(--on-ink-2)}
+section{padding-block:clamp(64px,9vw,112px)}
+.stage{background:var(--ink);color:var(--on-ink)}
+.stone{background:var(--stone)}
+.head{display:grid;gap:16px;max-width:800px}
+.btn{display:inline-flex;align-items:center;gap:10px;font:600 15.5px/1 var(--sans);padding:16px 26px;border-radius:999px;text-decoration:none;border:1.5px solid transparent;cursor:pointer;transition:transform .2s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--ink);color:var(--on-ink)}
+.btn-gold{background:var(--saffron);color:var(--ink)}
+.btn-line{border-color:currentColor;background:transparent}
+.placeholder{background:var(--saffron-wash);color:var(--ink);border-radius:6px;padding:0 6px;font-weight:600}
+.proto{background:var(--saffron);color:var(--ink);text-align:center;font-size:13px;font-weight:600;padding:8px 16px}
+
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--linen) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;height:72px}
+.brand{font-family:var(--display);font-size:30px;font-weight:600;text-decoration:none}
+.brand i{color:var(--saffron-deep)}
+.nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-size:15px;font-weight:500}
+.nav ul a{text-decoration:none;color:var(--body)}
+.nav ul a[aria-current]{color:var(--ink);font-weight:700}
+.nav .btn{padding:12px 20px;font-size:14.5px}
+
+
+/* hero */
+.hero{padding-block:clamp(52px,7vw,96px)}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .95fr;gap:clamp(32px,5vw,72px);align-items:center}
+.hero .wrap > *{min-width:0}
+.hero h1 em{font-style:italic;color:var(--saffron-deep);font-weight:500}
+.hero .copy{display:grid;gap:26px}
+.ctas{display:flex;flex-wrap:wrap;gap:14px}
+.heat{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:24px;display:grid;gap:14px;box-shadow:0 30px 60px -40px rgba(15,42,43,.45)}
+.heat .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.heat .top b{font-family:var(--display);font-size:23px;font-weight:600}
+.tag{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--saffron-deep);background:var(--saffron-wash);padding:5px 10px;border-radius:99px;white-space:nowrap}
+.heat-scroll{overflow-x:auto}
+.heat table{border-collapse:separate;border-spacing:4px;width:100%;min-width:400px;font-size:13.5px;font-variant-numeric:tabular-nums}
+.heat th{font-weight:600;color:var(--body);text-align:left;padding:4px 6px;font-size:12.5px}
+.heat td{text-align:center;padding:10px 4px;border-radius:8px;font-weight:700;color:var(--ink)}
+.heat td.l{background:var(--heat-low)} .heat td.m{background:var(--heat-mid)} .heat td.h{background:var(--heat-high)}
+.heat .key{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--body)}
+.heat .key span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.heat .key .kl::before{background:var(--heat-low)} .heat .key .km::before{background:var(--heat-mid)} .heat .key .kh::before{background:var(--heat-high)}
+.heat .read{font-size:14.5px;color:var(--body);border-top:1px solid var(--line);padding-top:12px}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+
+/* explainer */
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:28px;display:grid;gap:10px;align-content:start;min-width:0}
+.card p{color:var(--body);font-size:15.5px}
+.card ul{margin:0;padding-left:18px;color:var(--body);font-size:15.5px;display:grid;gap:4px}
+@media (max-width:900px){.three{grid-template-columns:1fr}}
+
+.measures{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:40px;border-top:1px solid var(--line-ink)}
+.measures div{padding:22px 20px 0 0;display:grid;gap:6px;min-width:0}
+.measures b{font-family:var(--display);font-size:26px;font-weight:600;color:var(--saffron)}
+.measures p{color:var(--on-ink-2);font-size:15px}
+@media (max-width:900px){.measures{grid-template-columns:1fr 1fr;gap:20px}}
+@media (max-width:520px){.measures{grid-template-columns:1fr}}
+
+/* who */
+.who{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(32px,6vw,88px);align-items:start}
+.who > *{min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chips span{font-size:14.5px;font-weight:500;padding:9px 16px;border:1px solid var(--line);border-radius:99px;background:var(--paper)}
+.triggers{display:grid;gap:0;margin-top:8px}
+.triggers p{padding-block:14px;border-top:1px solid var(--line);color:var(--body)}
+.triggers p b{color:var(--ink)}
+@media (max-width:860px){.who{grid-template-columns:1fr}}
+
+/* cadence */
+.cadence{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:44px}
+.cad{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:26px;display:grid;gap:8px;align-content:start;min-width:0}
+.cad.rec{background:var(--ink);color:var(--on-ink);border-color:var(--ink)}
+.cad .freq{font:700 12.5px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--saffron-deep)}
+.cad.rec .freq{color:var(--saffron)}
+.cad p{font-size:15px;color:var(--body)}
+.cad.rec p{color:var(--on-ink-2)}
+@media (max-width:980px){.cadence{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.cadence{grid-template-columns:1fr}}
+
+/* process */
+.steps{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:48px}
+.step{display:grid;gap:10px;align-content:start;padding-top:20px;border-top:2px solid var(--on-ink-2);min-width:0}
+.step:last-child{border-top-color:var(--saffron)}
+.step .n{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--saffron)}
+.step p{color:var(--on-ink-2);font-size:15px}
+@media (max-width:1060px){.steps{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:600px){.steps{grid-template-columns:1fr}}
+
+/* mapping */
+.map{margin-top:44px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--paper)}
+.map .row{display:grid;grid-template-columns:1fr 1.4fr;border-top:1px solid var(--line)}
+.map .row:first-child{border-top:0;background:var(--ink);color:var(--on-ink);font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.map .row > div{padding:18px 22px;min-width:0}
+.map .row > div:first-child{border-right:1px solid var(--line)}
+.map .row:first-child > div:first-child{border-right-color:var(--line-ink)}
+.map .sig{font-weight:600}
+.map .sig small{display:block;font-weight:400;color:var(--body);font-size:14px;margin-top:2px}
+.map .ans b{font-family:var(--display);font-size:22px;font-weight:600;display:block}
+.map .ans span{color:var(--body);font-size:15px}
+@media (max-width:760px){.map .row{grid-template-columns:1fr}.map .row > div:first-child{border-right:0;border-bottom:1px dashed var(--line);padding-bottom:10px}.map .row:first-child > div:last-child{display:none}}
+
+/* mitigation */
+.mit{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
+.mit .card{border-top:3px solid var(--saffron)}
+@media (max-width:900px){.mit{grid-template-columns:1fr}}
+
+/* trust */
+.trust{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,88px);align-items:start}
+.trust > *{min-width:0}
+.trust ul{list-style:none;margin:0;padding:0;display:grid}
+.trust li{padding:14px 0 14px 30px;border-top:1px solid var(--line-ink);position:relative;color:var(--on-ink-2)}
+.trust li::before{content:"";position:absolute;left:0;top:23px;width:16px;height:2px;background:var(--saffron)}
+.trust li b{color:var(--on-ink)}
+@media (max-width:860px){.trust{grid-template-columns:1fr}}
+
+/* offer + form */
+.offer{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,88px);align-items:start}
+.offer > *{min-width:0}
+.plans{display:grid;gap:14px;margin-top:24px}
+.plan{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px 24px;display:grid;gap:6px}
+.plan .price{font-family:var(--display);font-size:30px;font-weight:600;font-variant-numeric:tabular-nums}
+.plan p{color:var(--body);font-size:15px}
+form{display:grid;gap:16px;background:var(--ink-2);border-radius:24px;padding:clamp(24px,4vw,36px);color:var(--on-ink)}
+form h3{color:var(--on-ink)}
+.f{display:grid;gap:7px}
+.f label{font-size:14px;font-weight:600}
+.f input,.f select,.f textarea{font:400 16px/1.4 var(--sans);color:var(--ink);background:var(--paper);border:1px solid transparent;border-radius:12px;padding:13px 14px;width:100%}
+.f textarea{min-height:90px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
+.note{font-size:13.5px;color:var(--on-ink-2)}
+.thanks{background:var(--saffron-wash);color:var(--ink);border-radius:14px;padding:16px 18px;font-size:15px}
+@media (max-width:860px){.offer{grid-template-columns:1fr}}
+
+/* faq */
+.faq{display:grid;gap:0;margin-top:36px;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line);padding-block:18px}
+.faq summary{cursor:pointer;font-family:var(--display);font-size:24px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--sans);font-weight:400;color:var(--saffron-deep)}
+.faq details[open] summary::after{content:"−"}
+.faq details p{color:var(--body);margin-top:10px;max-width:70ch}
+
+footer{background:var(--ink);color:var(--on-ink-2);padding-block:48px;font-size:14px;border-top:1px solid var(--line-ink)}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:end}
+footer .brand{color:var(--on-ink)}
+</style>
+</head>
+<body>
+<header class="nav" id="siteNav">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img class="brand-mark" src="mark-64.png" width="34" height="34" alt=""><span>Unscripted<i>.</i></span></a>
+    <ul id="navList"><li><a href="index.html">Let’s talk</a></li><li><a href="ai-literacy.html">AI literacy</a></li><li><a href="proposal.html">Our proposal</a></li><li><a href="trainings.html">Trainings</a></li><li><a href="how-we-work.html">How we work</a></li><li><a href="events.html">Events</a></li><li><a href="network.html">Our network</a></li><li><a href="who-we-are.html">Who we are</a></li><li><a href="index.html#register">Register</a></li><li id="adminNavItem" hidden><a href="index.html#admin">Admin</a></li><li class="mobile-only"><a href="contact.html">Book a free audit</a></li></ul>
+    <a class="btn btn-primary" href="contact.html">Book a free audit</a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navList"><span class="bars"><span></span><span></span><span></span></span>Menu</button>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div class="copy">
+      <img class="head-mark" src="mark-512.png" width="512" height="512" alt="" aria-hidden="true">
+      <p class="eyebrow">Pulse survey action workshops</p>
+      <h1>Your pulse survey told you what hurts. <em>We help your leaders fix it.</em></h1>
+      <p class="lead">Share your latest pulse survey report. We read the signals, find the teams and themes that need attention, and design leadership workshops and targeted support around them. Then your next pulse shows whether it worked.</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="#share">Share your pulse report →</a>
+        <a class="btn btn-line" href="#how">How pulse surveys work</a>
+      </div>
+    </div>
+    <aside class="heat" aria-label="Example pulse survey heatmap">
+      <div class="top"><b>What we look for in your report</b><span class="tag">Example</span></div>
+      <div class="heat-scroll">
+        <table>
+          <thead><tr><th>Theme</th><th>Sales</th><th>Ops</th><th>Tech</th><th>Support</th></tr></thead>
+          <tbody>
+            <tr><th>My manager recognises good work</th><td class="h">78%</td><td class="l">41%</td><td class="h">74%</td><td class="m">58%</td></tr>
+            <tr><th>I can raise concerns safely</th><td class="m">62%</td><td class="l">38%</td><td class="h">71%</td><td class="l">44%</td></tr>
+            <tr><th>My workload is manageable</th><td class="l">39%</td><td class="m">55%</td><td class="m">52%</td><td class="l">36%</td></tr>
+            <tr><th>I see a future here</th><td class="h">70%</td><td class="m">57%</td><td class="l">43%</td><td class="m">60%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="key"><span class="kl">Needs attention (under 50%)</span><span class="km">Watch (50–65%)</span><span class="kh">Healthy (over 65%)</span></div>
+      <p class="read">Illustrative figures. Here, Ops managers would get a recognition and speak-up workshop, Sales and Support a workload conversation, and Tech a career-coaching session.</p>
+    </aside>
+  </div>
+</section>
+
+<section class="stage" id="how">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">How pulse surveys work</p>
+      <h2>A short, regular check on how people really feel at work</h2>
+      <p class="lead">A pulse survey is a quick, anonymous questionnaire, usually 5 to 15 questions, sent to employees at regular intervals. Unlike a long annual survey, it shows how things are changing, team by team, while there is still time to act.</p>
+    </div>
+    <div class="measures">
+      <div><b>Engagement</b><p>Pride, motivation, and whether people would recommend the company as a place to work (often reported as eNPS, a score from −100 to +100).</p></div>
+      <div><b>Manager effectiveness</b><p>Recognition, feedback, support, trust, and fairness: how people experience their own manager.</p></div>
+      <div><b>Wellbeing and workload</b><p>Stress, balance, and whether the workload is manageable.</p></div>
+      <div><b>Belonging and growth</b><p>Inclusion, speaking up safely, career growth, and intent to stay.</p></div>
+    </div>
+    <div class="three">
+      <div class="card" style="background:var(--ink-2);border-color:var(--line-ink)"><h3 style="color:var(--on-ink)">The questions</h3><p style="color:var(--on-ink-2)">Short statements rated on a 1 to 5 agreement scale, such as “My manager gives me useful feedback”, plus one or two open comment boxes.</p></div>
+      <div class="card" style="background:var(--ink-2);border-color:var(--line-ink)"><h3 style="color:var(--on-ink)">The results</h3><p style="color:var(--on-ink-2)">Shown as the share of favourable answers per question, compared with the last pulse and broken down by team, usually as a heatmap. Groups under about five people are hidden to protect anonymity.</p></div>
+      <div class="card" style="background:var(--ink-2);border-color:var(--line-ink)"><h3 style="color:var(--on-ink)">The gap</h3><p style="color:var(--on-ink-2)">Most organisations collect the data well. Far fewer turn it into action, and when nothing changes, people stop answering honestly. That is where we come in.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap who">
+    <div class="head">
+      <p class="eyebrow">Who it is for</p>
+      <h2>Any organisation that listens to its people, and wants to act on it</h2>
+      <p class="lead">Pulse surveys are used by companies of every size, from 50-person startups to large enterprises. We work with whatever you already use: a dedicated engagement platform, the survey built into your HR system, or a simple form.</p>
+      <div class="chips" style="margin-top:8px">
+        <span>IT and IT services</span><span>Banking and financial services</span><span>Global capability centres</span><span>Pharma and healthcare</span><span>Manufacturing</span><span>Retail and consumer</span><span>Fast-growing startups</span><span>Non-profits and education</span>
+      </div>
+    </div>
+    <div>
+      <p class="eyebrow">Times when it matters most</p>
+      <div class="triggers">
+        <p><b>Scores have dropped</b> in one or more teams since the last pulse.</p>
+        <p><b>After a restructure, merger or leadership change,</b> when trust is fragile.</p>
+        <p><b>During fast growth,</b> when many people have been promoted into their first manager role.</p>
+        <p><b>When attrition is rising</b> and exit interviews point to managers.</p>
+        <p><b>Before an annual engagement survey,</b> to fix known issues while there is time.</p>
+        <p><b>When comments mention</b> burnout, favouritism, or not feeling heard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stone">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Cadence</p>
+      <h2>How often to run a pulse</h2>
+      <p class="lead">There is no single right answer. The best cadence is the one you can act on before the next survey arrives.</p>
+    </div>
+    <div class="cadence">
+      <div class="cad"><span class="freq">Monthly</span><h3>During big change</h3><p>For restructures, integrations or fast-moving teams. Keep it to 3 to 5 questions so people do not tire of it.</p></div>
+      <div class="cad rec"><span class="freq">Quarterly · Most common</span><h3>The steady rhythm</h3><p>Long enough to act, short enough to see change. It lines up with our 30, 60 and 90-day follow-up, so each pulse measures our impact.</p></div>
+      <div class="cad"><span class="freq">Twice a year</span><h3>For stable teams</h3><p>Works for smaller or settled organisations, alongside regular manager one-to-ones.</p></div>
+      <div class="cad"><span class="freq">Annual + pulses</span><h3>The full picture</h3><p>A longer annual engagement survey for depth, with short pulses in between to track progress.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">How we work with your report</p>
+      <h2>From survey results to changed behaviour</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">01</span><h3 style="font-size:24px">Share</h3><p>You send the aggregated report under a mutual NDA. We never need individual responses.</p></div>
+      <div class="step"><span class="n">02</span><h3 style="font-size:24px">Read</h3><p>We map the hotspots: themes, teams, trends since last time, and what the comments say.</p></div>
+      <div class="step"><span class="n">03</span><h3 style="font-size:24px">Debrief</h3><p>A 90-minute session with HR and leadership to agree priorities and who needs support.</p></div>
+      <div class="step"><span class="n">04</span><h3 style="font-size:24px">Design</h3><p>Workshops built around your own survey themes and real scenarios, not a generic course.</p></div>
+      <div class="step"><span class="n">05</span><h3 style="font-size:24px">Deliver</h3><p>To the managers and teams who need it most, in groups we advise keeping under 30, with theatre-based practice.</p></div>
+      <div class="step"><span class="n">06</span><h3 style="font-size:24px">Re-measure</h3><p>Your next pulse becomes the scorecard, plus our free check-ins at 30, 60 or 90 days.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">From signal to workshop</p>
+      <h2>What your pulse shows, and what we design for it</h2>
+    </div>
+    <div class="map" role="table" aria-label="Pulse survey signals and the workshops we design for them">
+      <div class="row" role="row"><div role="columnheader">If your pulse shows low scores on</div><div role="columnheader">We design</div></div>
+      <div class="row" role="row"><div class="sig" role="cell">Recognition and feedback<small>“My manager recognises good work”</small></div><div class="ans" role="cell"><b>Feedback that lands</b><span>Managers rehearse specific praise and constructive feedback until it feels natural.</span></div></div>
+      <div class="row" role="row"><div class="sig" role="cell">Speaking up and psychological safety<small>“I can raise concerns without fear”</small></div><div class="ans" role="cell"><b>Making it safe to speak</b><span>How managers react to bad news, run inclusive meetings, and handle disagreement.</span></div></div>
+      <div class="row" role="row"><div class="sig" role="cell">Workload and wellbeing<small>“My workload is manageable”</small></div><div class="ans" role="cell"><b>Prioritising and protecting the team</b><span>Saying no upwards, delegating well, and spotting burnout early.</span></div></div>
+      <div class="row" role="row"><div class="sig" role="cell">Trust and autonomy<small>“My manager trusts me to make decisions”</small></div><div class="ans" role="cell"><b>Lead, don’t micromanage</b><span>Delegation, clear expectations and letting go of control.</span></div></div>
+      <div class="row" role="row"><div class="sig" role="cell">Growth and intent to stay<small>“I see a future for myself here”</small></div><div class="ans" role="cell"><b>Coaching conversations</b><span>Career conversations, development plans and stretch opportunities that keep good people.</span></div></div>
+      <div class="row" role="row"><div class="sig" role="cell">Inclusion and fairness<small>“Everyone is treated fairly in my team”</small></div><div class="ans" role="cell"><b>Inclusive leadership</b><span>Everyday bias, fair allocation of work, and supporting women and under-represented colleagues.</span></div></div>
+      <div class="row" role="row"><div class="sig" role="cell">Change and communication<small>“I understand where the company is heading”</small></div><div class="ans" role="cell"><b>Leading people through change</b><span>Explaining the why, handling resistance, and keeping trust while things move.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="stone">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Mitigation for hotspots</p>
+      <h2>When a team needs more than a workshop</h2>
+      <p class="lead">Some results need a closer, quieter response. These sit alongside the workshops, led by facilitators with clinical psychology and coaching backgrounds.</p>
+    </div>
+    <div class="mit">
+      <div class="card"><h3>One-to-one manager coaching</h3><p>Confidential coaching for managers whose teams scored lowest, focused on the specific themes their team raised.</p></div>
+      <div class="card"><h3>Facilitated listening sessions</h3><p>A neutral facilitator meets the team without the manager present, to understand the comments behind the scores.</p></div>
+      <div class="card"><h3>Manager action plans</h3><p>A simple plan for each manager: three commitments, how they will share them with the team, and when they will check in.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="wrap trust">
+    <div class="head">
+      <p class="eyebrow">Confidentiality</p>
+      <h2>Your people’s trust is the point. We protect it.</h2>
+      <p class="lead">Pulse surveys only work if employees believe their answers are safe. Everything we do keeps it that way.</p>
+    </div>
+    <ul>
+      <li><b>Aggregated reports only.</b> We never ask for or receive individual responses.</li>
+      <li><b>Groups of five or more.</b> We do not report on any group small enough to identify someone.</li>
+      <li><b>A mutual NDA</b> before you share anything.</li>
+      <li><b>Handled under India’s data protection law,</b> stored securely and deleted when the engagement ends.</li>
+      <li><b>Comments are themed,</b> never quoted in a way that could identify the person who wrote them.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="share">
+  <div class="wrap offer">
+    <div>
+      <div class="head">
+        <p class="eyebrow">Getting started</p>
+        <h2>Share your latest pulse report</h2>
+        <p class="lead">Tell us a little about your survey. Our team will send an NDA and a secure way to share the report, then set up the debrief.</p>
+      </div>
+      <div class="plans">
+        <div class="plan"><span class="eyebrow">Step one</span><h3>Pulse debrief</h3><p class="price ask-p">Speak with us</p><p>Report analysis, a hotspot summary and a 90-minute leadership debrief. Waived when you book workshops.</p></div>
+        <div class="plan"><span class="eyebrow">Step two</span><h3>Pulse action workshops</h3><p class="price ask-p">Speak with us</p><p>Designed around your themes, with free follow-up at 30, 60 or 90 days and a free refresher where needed.</p></div>
+      </div>
+    </div>
+    <form id="pulseForm" novalidate>
+      <h3>Tell us about your pulse</h3>
+      <div class="two">
+        <div class="f"><label for="pname">Your name</label><input id="pname" name="pname" autocomplete="name" required></div>
+        <div class="f"><label for="porg">Organisation</label><input id="porg" name="porg" autocomplete="organization" required></div>
+      </div>
+      <div class="f"><label for="pemail">Work email</label><input id="pemail" name="pemail" type="email" autocomplete="email" required></div>
+      <div class="two">
+        <div class="f"><label for="ptool">Survey tool</label><select id="ptool" name="ptool"><option>Engagement platform</option><option>Built into our HR system</option><option>Our own form</option><option>We do not run one yet</option></select></div>
+        <div class="f"><label for="pcad">How often you run it</label><select id="pcad" name="pcad"><option>Monthly</option><option selected>Quarterly</option><option>Twice a year</option><option>Annually</option><option>Not sure</option></select></div>
+      </div>
+      <div class="two">
+        <div class="f"><label for="psize">Employees surveyed</label><select id="psize" name="psize"><option>Under 100</option><option>100–500</option><option>500–2,000</option><option>2,000+</option></select></div>
+        <div class="f"><label for="plast">Last pulse</label><select id="plast" name="plast"><option>This month</option><option>1–3 months ago</option><option>Over 3 months ago</option></select></div>
+      </div>
+      <div class="f"><label for="pconcern">What worries you most in the results?</label><textarea id="pconcern" name="pconcern" placeholder="For example, falling scores on recognition in two teams"></textarea></div>
+      <button class="btn btn-gold" type="submit" style="justify-self:start">Send my details →</button>
+      <p class="note">Please do not attach or paste survey data here. We will send a secure link after the NDA.</p>
+      <p class="thanks" id="pthanks" hidden>Thank you. This is a prototype, so the form is not connected yet. On the live site, our team would contact you within one working day.</p>
+    </form>
+  </div>
+</section>
+
+<section class="stone">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Questions</p>
+      <h2>Common questions</h2>
+    </div>
+    <div class="faq">
+      <details><summary>We don’t run a pulse survey yet. Can you help?</summary><p>Yes. We can run a short anonymous pulse for you, 8 to 12 questions built around your values, and use it as the baseline before training.</p></details>
+      <details><summary>Our response rate was low. Is the report still useful?</summary><p>Usually, yes. We look at which teams answered and which did not; a low response rate can itself be a signal about trust. We will tell you honestly what the data can and cannot support.</p></details>
+      <details><summary>Will managers feel blamed?</summary><p>No. Workshops are framed around team themes, not individual scores. Managers who need extra support get it privately through coaching.</p></details>
+      <details><summary>How do we know the workshops worked?</summary><p>Your next pulse is the measure. We compare the same questions for the same teams, and our free check-ins at 30, 60 or 90 days fill the gap in between.</p></details>
+      <details><summary>Which survey tools do you work with?</summary><p>Any. We only need the aggregated report: scores by question and team, trends, and themed comments. Most tools export this as a PDF or spreadsheet.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="f-brand"><a class="brand" href="index.html"><img class="brand-mark" src="mark-64.png" width="34" height="34" alt=""><span>Unscripted<i style="color:var(--saffron)">.</i></span></a><span>A women-led leadership studio.</span></div>
+    <nav class="f-nav" aria-label="Footer"><a href="index.html">Let’s talk</a><a href="proposal.html">Our proposal</a><a href="trainings.html">Trainings</a><a href="how-we-work.html">How we work</a><a href="events.html">Events</a><a href="network.html">Our network</a><a href="train-with-us.html">Train with us</a><a href="ai-literacy.html">AI literacy</a><a href="pulse-survey.html">Pulse surveys</a><a href="who-we-are.html">Who we are</a><a href="index.html#register">Register</a><a href="contact.html">Book a free audit</a><a href="privacy.html">Privacy</a><a href="index.html#admin">Admin</a></nav>
+    <div class="f-end"><a href="mailto:hello@leadunscripted.com">hello@leadunscripted.com</a><span>© 2026 Unscripted. Leadership, rehearsed.</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var nav=document.getElementById('siteNav'),btn=nav&&nav.querySelector('.menu-toggle'),timer;
+  function setOpen(o){nav.classList.toggle('open',o);btn.setAttribute('aria-expanded',o?'true':'false')}
+  if(btn){
+    btn.addEventListener('click',function(){clearTimeout(timer);setOpen(!nav.classList.contains('open'))});
+    nav.querySelectorAll('#navList a').forEach(function(a){a.addEventListener('click',function(){setOpen(false)})});
+    nav.addEventListener('mouseleave',function(){if(nav.classList.contains('open'))timer=setTimeout(function(){setOpen(false)},350)});
+    nav.addEventListener('mouseenter',function(){clearTimeout(timer)});
+    document.addEventListener('click',function(e){if(nav.classList.contains('open')&&!nav.contains(e.target))setOpen(false)});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&nav.classList.contains('open')){setOpen(false);btn.focus()}});
+  }
+})();
+(function(){
+  if(!window.matchMedia||!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  var P={"index.html": ["Let’s talk", "Our home page: AI literacy for women, and what leadership training really costs."], "proposal.html": ["Our proposal", "Direct, women-led training, transparent pricing, the free 30/60/90-day follow-up, and how we compare."], "trainings.html": ["Trainings", "Tech & AI with Christina, including the 1-, 2- and 4-day AI programmes, and People & Leadership with Shilpi."], "pulse-survey.html": ["Pulse surveys", "Leadership pulse surveys, and how we act on every answer."], "who-we-are.html": ["Who we are", "Meet the co-founders, Shilpi Khanna and Christina Shikha, and our facilitators."], "contact.html": ["Book a free audit", "Tell us about your team. We review what you spend on training today, free."], "how-we-work.html": ["How we work", "Two teams behind every programme: our content team designs it, our trainers deliver it. ADDIE, Bloom’s and theatre-based training."], "events.html": ["Events", "Interview prep workshops for women every Saturday in November and December, free AI literacy Saturdays from January 2027, and our AI programmes."], "network.html": ["Our network", "Vetted local trainers across India, one contract, and we handle everything else."], "train-with-us.html": ["Train with us", "For trainers: 80% of the delivery fee, fixed in writing, paid within 15 to 45 days. Join the Founding 50."], "ai-literacy.html": ["AI literacy", "Why women need AI now, what you can build, and every way to learn it with Christina."], "training-executive-presence.html": ["Executive presence", "Walk into any room, read it, and be heard. Led by Shilpi Khanna."], "training-emotional-intelligence.html": ["Emotional intelligence and resilience", "Notice what you feel, choose how you respond, and recover faster. Led by Shilpi Khanna."], "training-storytelling.html": ["Storytelling for leaders", "Turn strategy, data and change into stories people remember and act on. Led by Shilpi Khanna."], "training-women-in-leadership.html": ["Women stepping into leadership", "Own your voice, your space and your ambition at work. Led by Shilpi Khanna."], "training-decision-making.html": ["Decision-making and accountability", "Make clear decisions, own them, and help your team do the same. Led by Shilpi Khanna."], "training-first-time-managers.html": ["First-time managers", "From colleague to manager, with confidence and without losing your team. Led by Shilpi Khanna."], "training-feedback.html": ["Feedback that lands", "Give praise and hard truths that people hear, accept and act on. Led by Shilpi Khanna."], "training-difficult-conversations.html": ["Difficult conversations", "Handle performance issues, conflict and bad news without damaging trust. Led by Shilpi Khanna."], "training-delegation.html": ["Lead, don’t micromanage", "Delegate with clarity, trust your team, and get your time back. Led by Shilpi Khanna."], "training-coaching-conversations.html": ["The manager as coach", "Ask more, tell less, and grow people who solve their own problems. Led by Shilpi Khanna."], "training-influencing.html": ["Influencing without authority", "Win support across teams, upwards and with stakeholders you do not manage. Led by Shilpi Khanna."], "training-conflict-resolution.html": ["Conflict resolution", "Turn friction between people and teams into honest, productive disagreement. Led by Shilpi Khanna."], "training-leading-change.html": ["Leading people through change", "Keep trust and momentum while restructures, mergers or new ways of working land. Led by Shilpi Khanna."], "training-inclusive-leadership.html": ["Inclusive leadership", "Lead teams where everyone is heard, treated fairly and able to do their best work. Led by Shilpi Khanna."], "training-psychological-safety.html": ["Making it safe to speak", "Build teams where people raise problems, ideas and mistakes early. Led by Shilpi Khanna."], "training-ai-business-programme.html": ["Grow your business online with AI: the 4-day programme", "Level 3, Advanced. Four Saturdays, and a real business online at the end: brand, website, email, customers, money, automation and marketing. Led by Christina Shikha."], "training-ai-business-2-day.html": ["Launch and run with AI: the 2-day programme", "Level 2, Intermediate. Two Saturdays to go live on your own domain, with email, forms, payments and a simple customer tracker. Led by Christina Shikha."], "training-website-with-ai.html": ["Build your website with AI", "Go from a blank page to a live, professional website in a day, without writing code yourself. Led by Christina Shikha."], "training-domain-and-email.html": ["Your domain and a business email", "Own your web address and send email from your business name, not a personal account. Led by Christina Shikha."], "training-brand-with-ai.html": ["Your brand identity with AI", "A name, a logo, colours and a voice that look professional everywhere you show up. Led by Christina Shikha."], "training-run-your-business-with-ai.html": ["Run your business with AI: customers and money", "Registrations, customers, payments, follow-ups and profit, all in one simple dashboard you control. Led by Christina Shikha."], "training-social-media-with-ai.html": ["Social media and content with AI", "A month of posts, carousels and newsletters, made in your brand in an afternoon. Led by Christina Shikha."], "training-pitch-with-ai.html": ["Proposals, pitch decks and partnerships with AI", "Win clients and partners with proposals and decks that look as good as you are. Led by Christina Shikha."], "training-ai-at-work.html": ["AI at work", "Use AI safely and well on the real work your team does every day. Led by Christina Shikha."], "training-leading-with-ai.html": ["Leading with AI", "Set the rules, the habits and the example for AI in your team. Led by Christina Shikha."], "training-ai-for-trainers.html": ["AI for trainers", "Design, personalise and evaluate training in hours, not days. Led by Christina Shikha."], "training-agile-ways-of-working.html": ["Agile ways of working", "Plan in short cycles, deliver in small pieces, and adapt as you learn. Led by Christina Shikha."], "training-leading-digital-change.html": ["Leading digital change", "Bring people with you when new systems and tools arrive. Led by Christina Shikha."], "training-project-management-essentials.html": ["Project management for non-project managers", "Plan, track and land projects without a project office. Led by Christina Shikha."]};
+  var here=(location.pathname.split('/').pop()||'index.html');
+  var card=document.createElement('div');card.className='hovercard';card.setAttribute('aria-hidden','true');document.body.appendChild(card);
+  var cur=null,showT,hideT;
+  function info(a){
+    var h=a.getAttribute('href')||'';if(/^(mailto:|tel:|https?:|javascript:)/.test(h))return null;
+    var i=h.indexOf('#'),page=i<0?h:h.slice(0,i),hash=i<0?'':h.slice(i+1);
+    if(!page)page=here;
+    if(hash==='register')return{t:'Register',d:'Opens the registration form. Pick any training from either track.',k:'Registration form'};
+    if(hash==='reg-ai-owners')return{t:'Register: business owners',d:'Launch your business with AI, in a day. Full-day Saturday, online.',k:'Registration form'};
+    if(hash==='reg-ai-trainers')return{t:'Register: trainers',d:'AI literacy for trainers. Full-day Saturday, online.',k:'Registration form'};
+    if(hash.indexOf('reg-')===0){var p=P['training-'+hash.slice(4)+'.html'];return{t:'Register',d:p?p[0]+'. We confirm dates and the fee by email.':'Opens the registration form.',k:'Registration form'}}
+    if(hash==='admin'||hash==='registrations')return{t:'Admin',d:'Deals, follow-ups and payments. Founders only.',k:'Founders only'};
+    var e=P[page];if(!e)return null;
+    if(page===here&&!hash&&a.getAttribute('aria-current'))return null;
+    return{t:e[0],d:e[1],img:'preview-'+page.replace('.html','')+'.jpg',k:page===here?'This page':'Opens this page'};
+  }
+  function place(a){
+    var r=a.getBoundingClientRect(),w=card.offsetWidth,h=card.offsetHeight,m=12;
+    var x=Math.min(Math.max(m,r.left+r.width/2-w/2),innerWidth-w-m);
+    var y=r.bottom+10;if(y+h>innerHeight-m)y=Math.max(m,r.top-h-10);
+    if(a.closest('.nav.open #navList')){x=Math.max(m,r.right-w-12);y=Math.min(Math.max(m,r.top+r.height/2-h/2),innerHeight-h-m)}
+    card.style.left=x+'px';card.style.top=y+'px';
+  }
+  function show(a){
+    var i=info(a);if(!i)return;
+    card.innerHTML=(i.img?'<img alt="" src="'+i.img+'">':'')+'<div class="hc-body"><strong></strong><span></span><small></small></div>';
+    card.querySelector('strong').textContent=i.t;card.querySelector('span').textContent=i.d;card.querySelector('small').textContent=i.k;
+    var im=card.querySelector('img');if(im){im.onerror=function(){im.remove();place(a)};im.onload=function(){place(a)}}
+    place(a);card.classList.add('on');
+  }
+  function hide(){clearTimeout(showT);card.classList.remove('on');cur=null}
+  document.addEventListener('mouseover',function(e){
+    var a=e.target.closest&&e.target.closest('a[href]');
+    if(a===cur)return;clearTimeout(showT);
+    if(!a){hide();return}
+    cur=a;card.classList.remove('on');showT=setTimeout(function(){if(cur===a)show(a)},220);
+  });
+  document.addEventListener('focusin',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(a){cur=a;show(a)}});
+  document.addEventListener('focusout',hide);
+  addEventListener('scroll',hide,{passive:true});
+  document.addEventListener('mousedown',hide);
+})();
+(function(){
+  var form=document.getElementById('pulseForm');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(!form.checkValidity()){form.reportValidity();return}
+    document.getElementById('pthanks').hidden=false;
+  });
+})();
+</script>
+</body>
+</html>
