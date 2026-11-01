@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en">
-<head><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script><script src="uns-live.js"></script>
+<head><link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="64x64" href="mark-64.png"><link rel="icon" type="image/png" sizes="32x32" href="mark-32.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script><script src="uns-live.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Events · Unscripted</title>
-<link rel="icon" type="image/png" sizes="64x64" href="mark-64.png">
-<link rel="icon" type="image/png" sizes="32x32" href="mark-32.png">
-<link rel="apple-touch-icon" href="mark-256.png">
+
+
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
 <link rel="stylesheet" href="styles.css">
 <style>.mobile-only{display:none}@media (max-width:1280px){.mobile-only{display:block}}</style>
@@ -114,8 +114,7 @@
         </div>
         <div class="f"><label for="qTopic">What is it about?</label><select id="qTopic" required><option value="">Choose one</option><option>Free AI Saturdays for women</option><option>Free career sessions</option><option>Paid AI programmes</option><option>Training for my team or company</option><option>Joining the trainer network</option><option>Something else</option></select></div>
         <div class="f"><label for="qMsg">Your question</label><textarea id="qMsg" required></textarea></div>
-        <button class="btn btn-primary" type="submit" style="justify-self:start">Send my question →</button>
-        <p style="font-size:14px;color:var(--body)">We use your details only to reply. See our <a href="privacy.html">privacy notice</a>.</p>
+        <div class="uc"><label><input type="checkbox" data-consent="core" required><span>I am 18 or over, and I agree that Unscripted may use the details on this form to reply to my question, as set out in our <a href="privacy.html">privacy notice</a>. I can withdraw my consent at any time.</span></label><label class="uc-opt"><input type="checkbox" data-consent="news"><span>Optional: email me about future Unscripted sessions. I can unsubscribe at any time.</span></label><p class="uc-note">We collect only what this form asks for, store it on secure servers in India, share it only with the people who handle your request or run your session, and never sell it. To see, correct or delete your details, or to withdraw consent, use our <a href="privacy.html#request">privacy request form</a>.</p></div><button class="btn btn-primary" type="submit" style="justify-self:start">Send my question →</button>
         <p class="reg-msg" id="qMsgOut" hidden></p>
       </form>
     </div>
@@ -166,7 +165,7 @@
         <div class="f"><label for="eSit">Which describes you best?</label><select id="eSit" data-req><option value="">Choose one</option><option>Returning to work after a break</option><option>Looking for my first job</option><option>Changing careers</option><option>Working, and want to grow</option><option>Other</option></select></div>
       </div>
       <div class="f" data-for="freeq"><label for="eWhy">Why do you need this session free? <span class="hint">Please be honest and specific. This helps us give places to those who need them most.</span></label><textarea id="eWhy" data-req minlength="30"></textarea></div>
-      <label class="check"><input type="checkbox" id="eOk" required><span>If I get a place, I will join for the whole session. I understand Unscripted will use my details only to review my registration and contact me about this session, as set out in our <a href="privacy.html">privacy notice</a>.</span></label>
+      <label class="check"><input type="checkbox" id="eOk" required><span>If I get a place, I will join for the whole session.</span></label><div class="uc"><label><input type="checkbox" data-consent="core" required><span>I am 18 or over, and I agree that Unscripted may use the details on this form to review my application and contact me about this session, as set out in our <a href="privacy.html">privacy notice</a>. I can withdraw my consent at any time.</span></label><label class="uc-opt"><input type="checkbox" data-consent="news"><span>Optional: email me about future Unscripted sessions. I can unsubscribe at any time.</span></label><p class="uc-note">We collect only what this form asks for, store it on secure servers in India, share it only with the people who handle your request or run your session, and never sell it. To see, correct or delete your details, or to withdraw consent, use our <a href="privacy.html#request">privacy request form</a>.</p></div>
       <button class="btn btn-gold" type="submit" id="eSubmit" style="justify-self:start">Send my application →</button>
       <p class="reg-msg" id="eMsg" hidden></p>
     </form>
@@ -335,7 +334,7 @@
     var rec={createdAt:new Date().toISOString(),status:'New',training:current.id,trainingTitle:current.title+(current.date?' ('+current.date+')':' (date TBA)'),audience:current.kind,name:v('eName'),email:v('eEmail'),phone:v('ePhone'),city:v('eCity'),source:'Events page',dealType:'Individual',org:'',value:0,paid:0,owner:'',
       answers:current.kind==='prep'?{company:v('pCo'),role:v('pRole'),interview:v('pDate'),help:v('pHelp')}:career?{situation:v('eSit'),why:v('eWhy')}:{business:v('eBiz'),running:v('eRun'),offer:v('eOffer'),where:v('eWhere'),helps:v('eHelp'),why:v('eWhy')}};
     sub.disabled=true;
-    cap('db').then(function(db){if(!db)throw{code:'no_db'};return db.collection('registrations').add(rec)})
+    cap('db').then(function(db){if(!db)throw{code:'no_db'};return db.collection('registrations').add(window.unsConsent(rec))})
     .then(function(){form.reset();say(msg,current.kind==='prep'?'Thank you. You are registered. We will email you the joining details and what to prepare.':'Thank you. We have your application and will email you within three working days to let you know.',true)})
     .catch(function(){say(msg,'Online applications are not open on this preview of the site yet. Please email hello@leadunscripted.com with the session name and your answers, and we will add you.',false)})
     .then(function(){sub.disabled=false});
@@ -378,11 +377,44 @@
     if(!q.checkValidity()){q.reportValidity();return}
     var btn=q.querySelector('button[type=submit]');btn.disabled=true;
     var rec={createdAt:new Date().toISOString(),status:'New',training:'question',trainingTitle:'Question: '+v('qTopic'),audience:'query',name:v('qName'),email:v('qEmail'),phone:'',city:'',source:'Events page',dealType:'Individual',org:'',value:0,paid:0,owner:'',answers:{topic:v('qTopic'),message:v('qMsg')}};
-    cap('db').then(function(db){if(!db)throw{code:'no_db'};return db.collection('registrations').add(rec)})
+    cap('db').then(function(db){if(!db)throw{code:'no_db'};return db.collection('registrations').add(window.unsConsent(rec))})
     .then(function(){q.reset();say(qOut,'Thank you. We will reply within two working days.',true)})
     .catch(function(){say(qOut,'Online questions are not open on this preview of the site yet. Please email hello@leadunscripted.com and we will reply within two working days.',false)})
     .then(function(){btn.disabled=false});
   });
+})();
+</script>
+<script>
+(function(){
+  document.addEventListener('submit',function(e){window.__unsForm=e.target},true);
+  window.unsCap=function(n){return window.claude&&window.claude.use?window.claude.use(n):Promise.resolve(null)};
+  window.unsConsent=function(rec,f){
+    f=f||window.__unsForm;
+    var core=f&&f.querySelector('[data-consent="core"]'),news=f&&f.querySelector('[data-consent="news"]');
+    rec.consent={version:'2026-11-01',at:new Date().toISOString(),page:location.pathname.split('/').pop()||'index.html',form:f&&f.id||'',
+      agreed:!!(core&&core.checked),wording:core?core.parentNode.textContent.replace(/\s+/g,' ').trim():'',marketing:!!(news&&news.checked)};
+    return rec;
+  };
+  // Sends a simple enquiry form (audit, pulse review, privacy request) to the registrations table.
+  window.unsSend=function(form,meta,out,okText){
+    var val=function(sel){var el=form.querySelector(sel);return el?el.value.trim():''};
+    var answers={};
+    form.querySelectorAll('input,select,textarea').forEach(function(el){
+      if(el.type==='checkbox'||el.type==='submit'||!el.id||!el.value.trim())return;
+      var lb=form.querySelector('label[for="'+el.id+'"]');
+      answers[lb?lb.textContent.replace(/\s+/g,' ').trim():el.id]=el.value.trim();
+    });
+    var rec={createdAt:new Date().toISOString(),status:'New',training:meta.training,trainingTitle:meta.title(answers),audience:meta.audience,
+      name:val('[autocomplete="name"]'),email:val('input[type="email"]'),phone:'',city:'',source:meta.source,
+      dealType:meta.dealType||'Business',org:val('[autocomplete="organization"]'),value:0,paid:0,owner:'',answers:answers};
+    window.unsConsent(rec,form);
+    var btn=form.querySelector('[type="submit"]');btn.disabled=true;
+    var say=function(t,ok){out.textContent=t;out.hidden=false;out.style.color=ok?'':'#9A3412'};
+    window.unsCap('db').then(function(db){if(!db)throw{code:'no_db'};return db.collection('registrations').add(rec)})
+      .then(function(){form.reset();say(okText,true)})
+      .catch(function(){say('Sorry, this did not send. Please email hello@leadunscripted.com and we will help.',false)})
+      .then(function(){btn.disabled=false});
+  };
 })();
 </script>
 </body>

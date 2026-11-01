@@ -1,8 +1,8 @@
-<!doctype html><html><head><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script><script src="uns-live.js"></script><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Unscripted · A women-led leadership studio</title><meta name="description" content="Unscripted: a women-led leadership and learning studio. Leadership training for teams, free AI literacy Saturdays for women in business, and interview prep workshops for women."></head><body>
+<!doctype html><html><head><link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="64x64" href="mark-64.png"><link rel="icon" type="image/png" sizes="32x32" href="mark-32.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script><script src="uns-live.js"></script><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><title>Unscripted · A women-led leadership studio</title><meta name="description" content="Unscripted: a women-led leadership and learning studio. Leadership training for teams, free AI literacy Saturdays for women in business, and interview prep workshops for women."></head><body>
 
-<link rel="icon" type="image/png" sizes="64x64" href="mark-64.png">
-<link rel="icon" type="image/png" sizes="32x32" href="mark-32.png">
-<link rel="apple-touch-icon" href="mark-256.png">
+
+
+
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
 <link rel="stylesheet" href="styles.css">
 <style>.mobile-only{display:none}@media (max-width:1280px){.mobile-only{display:block}}</style>
@@ -202,7 +202,7 @@
       </fieldset>
 
       <div class="reg-set" data-for="common" hidden>
-        <label class="consent"><input type="checkbox" id="rConsent" data-req> I agree to Unscripted keeping these details to contact me about this registration, as set out in our <a href="privacy.html">privacy notice</a>. We never share them.</label>
+        <div class="uc"><label><input type="checkbox" data-consent="core" id="rConsent" data-req><span>I am 18 or over, and I agree that Unscripted may use the details on this form to handle my registration, contact me about it and run the training I sign up for, as set out in our <a href="privacy.html">privacy notice</a>. I can withdraw my consent at any time.</span></label><label class="uc-opt"><input type="checkbox" data-consent="news"><span>Optional: email me about future Unscripted sessions. I can unsubscribe at any time.</span></label><p class="uc-note">We collect only what this form asks for, store it on secure servers in India, share it only with the people who handle your request or run your session, and never sell it. To see, correct or delete your details, or to withdraw consent, use our <a href="privacy.html#request">privacy request form</a>.</p></div>
         <button class="btn btn-gold" type="submit" id="rSubmit">Register →</button>
         <p class="reg-msg" id="regMsg" role="status" aria-live="polite" hidden></p>
       </div>
@@ -523,7 +523,7 @@
     submit.disabled = true;
     cap('db').then(function(db){
       if (!db) throw { code: 'no_db' };
-      return db.collection('registrations').add(rec);
+      return db.collection('registrations').add(window.unsConsent(rec));
     }).then(function(){
       form.reset(); sync();
       say('Thank you, you are registered. Our team will email you within one working day to confirm.', true);
@@ -541,7 +541,7 @@
   function num(v){ var n = Number(v); return isFinite(n) && v !== '' && v != null ? n : 0 }
   var LABELS = { company:'Interviewing with', interview:'Interview date', help:'Wants help with', business:'Business', running:'Running for', offer:'Sells', where:'Found at', helps:'How it helps', why:'Why free', situation:'Situation', topic:'Topic', message:'Message', stage:'Stage', sells:'Sells', channels:'Sells on', domain:'Has domain', laptop:'Laptop', goal:'Wants', areas:'Trains in', years:'Years', via:'Gets work', ai:'Uses AI', bring:'Brings', org:'Organisation', role:'Role', size:'People', format:'Format', when:'When', pack:'Wants', note:'Note' };
   function dealType(d){ return d.dealType || (d.audience === 'corporate' ? 'Business' : 'Individual') }
-  function audLabel(a){ return a === 'prep' ? 'Interview prep' : a === 'free-ai' ? 'Free AI session' : a === 'free-career' ? 'Free career session' : a === 'query' ? 'Question' : a === 'owners' ? 'Business owner' : a === 'trainers' ? 'Trainer' : a === 'corporate' ? 'Team training' : 'Added by team' }
+  function audLabel(a){ return a === 'privacy' ? 'Privacy request' : a === 'audit' ? 'Cost audit' : a === 'pulse' ? 'Pulse review' : a === 'prep' ? 'Interview prep' : a === 'free-ai' ? 'Free AI session' : a === 'free-career' ? 'Free career session' : a === 'query' ? 'Question' : a === 'owners' ? 'Business owner' : a === 'trainers' ? 'Trainer' : a === 'corporate' ? 'Team training' : 'Added by team' }
   function today(){ var d = new Date(); d.setHours(0,0,0,0); return d }
   function dayDiff(iso){ if (!iso) return null; var d = new Date(iso + 'T00:00:00'); return Math.round((d - today()) / 864e5) }
   function shortDate(iso){ if (!iso) return ''; var d = new Date(iso.length === 10 ? iso + 'T00:00:00' : iso); return isNaN(d) ? '' : d.toLocaleDateString('en-IN', {day:'numeric', month:'short', year: d.getFullYear() === new Date().getFullYear() ? undefined : 'numeric'}) }
@@ -739,4 +739,37 @@
 
 </script>
 
+<script>
+(function(){
+  document.addEventListener('submit',function(e){window.__unsForm=e.target},true);
+  window.unsCap=function(n){return window.claude&&window.claude.use?window.claude.use(n):Promise.resolve(null)};
+  window.unsConsent=function(rec,f){
+    f=f||window.__unsForm;
+    var core=f&&f.querySelector('[data-consent="core"]'),news=f&&f.querySelector('[data-consent="news"]');
+    rec.consent={version:'2026-11-01',at:new Date().toISOString(),page:location.pathname.split('/').pop()||'index.html',form:f&&f.id||'',
+      agreed:!!(core&&core.checked),wording:core?core.parentNode.textContent.replace(/\s+/g,' ').trim():'',marketing:!!(news&&news.checked)};
+    return rec;
+  };
+  // Sends a simple enquiry form (audit, pulse review, privacy request) to the registrations table.
+  window.unsSend=function(form,meta,out,okText){
+    var val=function(sel){var el=form.querySelector(sel);return el?el.value.trim():''};
+    var answers={};
+    form.querySelectorAll('input,select,textarea').forEach(function(el){
+      if(el.type==='checkbox'||el.type==='submit'||!el.id||!el.value.trim())return;
+      var lb=form.querySelector('label[for="'+el.id+'"]');
+      answers[lb?lb.textContent.replace(/\s+/g,' ').trim():el.id]=el.value.trim();
+    });
+    var rec={createdAt:new Date().toISOString(),status:'New',training:meta.training,trainingTitle:meta.title(answers),audience:meta.audience,
+      name:val('[autocomplete="name"]'),email:val('input[type="email"]'),phone:'',city:'',source:meta.source,
+      dealType:meta.dealType||'Business',org:val('[autocomplete="organization"]'),value:0,paid:0,owner:'',answers:answers};
+    window.unsConsent(rec,form);
+    var btn=form.querySelector('[type="submit"]');btn.disabled=true;
+    var say=function(t,ok){out.textContent=t;out.hidden=false;out.style.color=ok?'':'#9A3412'};
+    window.unsCap('db').then(function(db){if(!db)throw{code:'no_db'};return db.collection('registrations').add(rec)})
+      .then(function(){form.reset();say(okText,true)})
+      .catch(function(){say('Sorry, this did not send. Please email hello@leadunscripted.com and we will help.',false)})
+      .then(function(){btn.disabled=false});
+  };
+})();
+</script>
 </body></html>
