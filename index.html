@@ -754,7 +754,7 @@
     return rec;
   };
   // Sends a simple enquiry form (audit, pulse review, privacy request) to the registrations table.
-  window.unsSend=function(form,meta,out,okText){
+  window.unsSend=function(form,meta,out,okText,onOk){
     var val=function(sel){var el=form.querySelector(sel);return el?el.value.trim():''};
     var answers={};
     form.querySelectorAll('input,select,textarea').forEach(function(el){
@@ -769,7 +769,7 @@
     var btn=form.querySelector('[type="submit"]');btn.disabled=true;
     var say=function(t,ok){out.textContent=t;out.hidden=false;out.style.color=ok?'':'#9A3412'};
     window.unsCap('db').then(function(db){if(!db)throw{code:'no_db'};return db.collection('registrations').add(rec)})
-      .then(function(){form.reset();say(okText,true)})
+      .then(function(){form.reset();say(okText,true);if(onOk)onOk(rec)})
       .catch(function(){say('Sorry, this did not send. Please email hello@leadunscripted.com and we will help.',false)})
       .then(function(){btn.disabled=false});
   };

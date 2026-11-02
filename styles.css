@@ -1146,6 +1146,8 @@ form.uf{background:none;border-radius:0;padding:0}
 .th-enq{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,5vw,64px);align-items:start}
 @media (max-width:900px){.th-enq{grid-template-columns:1fr}}
 .th-enq>div:first-child{display:grid;gap:16px}.th-mail a{color:var(--saffron)}
+.th-how{margin:0;padding-left:1.2em;display:grid;gap:8px;color:var(--on-ink-2);font-size:17px;line-height:1.5}.th-how b{color:var(--on-ink)}
+.th-done{display:grid;gap:14px;background:var(--linen);color:var(--ink);border-radius:20px;padding:24px}.th-done h3{font-size:28px}.th-done p{color:var(--body);line-height:1.55}.th-done .btn-line{color:var(--ink)}.th-feeout{font-weight:600;color:var(--ink)!important}
 .th-form{display:grid;gap:16px;background:rgba(243,244,239,.06);border:1px solid var(--line-ink);border-radius:24px;padding:clamp(20px,3vw,32px)}
 .th-faq{display:grid;gap:10px;margin-top:32px;max-width:860px}
 .th-faq details{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 20px}
