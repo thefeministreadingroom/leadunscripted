@@ -40,6 +40,9 @@
 <section class="ai-free" aria-label="Free AI literacy Saturdays">
   <div class="wrap"><a href="events.html#free-ai"><span class="t">Free from January 2027</span><span><b>AI literacy Saturdays for women.</b> 10 places a session, for women who need it most. Apply for each session.</span><span class="g">See the calendar →</span></a></div>
 </section>
+<section class="th-strip" aria-label="Theatre-based training">
+  <div class="wrap"><a href="theatre-based-training.html"><span class="t">New</span><span class="x"><b>Theatre-based training and trainer certification.</b> Don’t just talk about the difficult conversation. Rehearse it. 1-day workshop or 3-day certification.</span><span class="g">Explore →</span></a></div>
+</section>
 <section class="nw-strip" aria-label="Our trainer network">
   <div class="wrap">
     <a href="network.html"><span class="t">For companies</span><span class="x"><b>Local trainers, one contract.</b> We handle the trainer, logistics, paperwork and follow-up. →</span></a>
@@ -369,7 +372,7 @@
 <footer>
   <div class="wrap">
     <div class="f-brand"><a class="brand" href="index.html"><img class="brand-mark" src="mark-64.png" width="34" height="34" alt=""><span>Unscripted<i style="color:var(--saffron)">.</i></span></a><span>A women-led leadership studio.</span></div>
-    <nav class="f-nav" aria-label="Footer"><a href="index.html">Let’s talk</a><a href="proposal.html">Our proposal</a><a href="trainings.html">Trainings</a><a href="how-we-work.html">How we work</a><a href="events.html">Events</a><a href="network.html">Our network</a><a href="train-with-us.html">Train with us</a><a href="ai-literacy.html">AI literacy</a><a href="pulse-survey.html">Pulse surveys</a><a href="who-we-are.html">Who we are</a><a href="index.html#register">Register</a><a href="contact.html">Book a free audit</a><a href="privacy.html">Privacy</a><a href="index.html#admin">Admin</a></nav>
+    <nav class="f-nav" aria-label="Footer"><a href="index.html">Let’s talk</a><a href="proposal.html">Our proposal</a><a href="trainings.html">Trainings</a><a href="how-we-work.html">How we work</a><a href="theatre-based-training.html">Theatre-based training</a><a href="events.html">Events</a><a href="network.html">Our network</a><a href="train-with-us.html">Train with us</a><a href="ai-literacy.html">AI literacy</a><a href="pulse-survey.html">Pulse surveys</a><a href="who-we-are.html">Who we are</a><a href="index.html#register">Register</a><a href="contact.html">Book a free audit</a><a href="privacy.html">Privacy</a><a href="index.html#admin">Admin</a></nav>
     <div class="f-end"><a href="mailto:hello@leadunscripted.com">hello@leadunscripted.com</a><span>© 2026 Unscripted. Leadership, rehearsed.</span></div>
   </div>
 </footer>
@@ -541,7 +544,7 @@
   function num(v){ var n = Number(v); return isFinite(n) && v !== '' && v != null ? n : 0 }
   var LABELS = { company:'Interviewing with', interview:'Interview date', help:'Wants help with', business:'Business', running:'Running for', offer:'Sells', where:'Found at', helps:'How it helps', why:'Why free', situation:'Situation', topic:'Topic', message:'Message', stage:'Stage', sells:'Sells', channels:'Sells on', domain:'Has domain', laptop:'Laptop', goal:'Wants', areas:'Trains in', years:'Years', via:'Gets work', ai:'Uses AI', bring:'Brings', org:'Organisation', role:'Role', size:'People', format:'Format', when:'When', pack:'Wants', note:'Note' };
   function dealType(d){ return d.dealType || (d.audience === 'corporate' ? 'Business' : 'Individual') }
-  function audLabel(a){ return a === 'privacy' ? 'Privacy request' : a === 'audit' ? 'Cost audit' : a === 'pulse' ? 'Pulse review' : a === 'prep' ? 'Interview prep' : a === 'free-ai' ? 'Free AI session' : a === 'free-career' ? 'Free career session' : a === 'query' ? 'Question' : a === 'owners' ? 'Business owner' : a === 'trainers' ? 'Trainer' : a === 'corporate' ? 'Team training' : 'Added by team' }
+  function audLabel(a){ return a === 'theatre' ? 'Theatre enquiry' : a === 'privacy' ? 'Privacy request' : a === 'audit' ? 'Cost audit' : a === 'pulse' ? 'Pulse review' : a === 'prep' ? 'Interview prep' : a === 'free-ai' ? 'Free AI session' : a === 'free-career' ? 'Free career session' : a === 'query' ? 'Question' : a === 'owners' ? 'Business owner' : a === 'trainers' ? 'Trainer' : a === 'corporate' ? 'Team training' : 'Added by team' }
   function today(){ var d = new Date(); d.setHours(0,0,0,0); return d }
   function dayDiff(iso){ if (!iso) return null; var d = new Date(iso + 'T00:00:00'); return Math.round((d - today()) / 864e5) }
   function shortDate(iso){ if (!iso) return ''; var d = new Date(iso.length === 10 ? iso + 'T00:00:00' : iso); return isNaN(d) ? '' : d.toLocaleDateString('en-IN', {day:'numeric', month:'short', year: d.getFullYear() === new Date().getFullYear() ? undefined : 'numeric'}) }
