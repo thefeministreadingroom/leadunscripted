@@ -1070,3 +1070,14 @@ form.uf{background:none;border-radius:0;padding:0}
 .prose{max-width:760px;display:grid;gap:14px}.prose h2{font-size:clamp(26px,3vw,34px);margin-top:18px}.prose p{color:var(--body);font-size:17px;line-height:1.65}
 
 .uc{display:grid;gap:10px;margin:4px 0 6px}.uc label{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;font-size:15px;line-height:1.5;color:inherit}.uc input[type=checkbox]{width:20px;height:20px;margin:2px 0 0;accent-color:var(--saffron-deep)}.uc .uc-opt{opacity:.85}.uc-note{font-size:13.5px;line-height:1.55;color:inherit;opacity:.8;margin:0}.uc a{color:inherit}.prose table{width:100%;border-collapse:collapse;font-size:15.5px;line-height:1.5}.prose th,.prose td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}.prose th{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--saffron-deep)}.prose td{color:var(--body)}.prose .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--paper)}.prose ul{display:grid;gap:8px;padding-left:1.2em;color:var(--body);font-size:17px;line-height:1.6}.prose h3{font-size:20px;margin-top:6px}@media (max-width:820px){.wrap.audit{grid-template-columns:1fr}}.priv-req{border:2px solid var(--saffron);border-radius:20px;padding:24px;background:var(--paper);display:grid;gap:14px;margin-top:8px}.priv-req .f{display:grid;gap:6px}.priv-req label{font-weight:600;font-size:15px}.priv-req input,.priv-req select,.priv-req textarea{font:inherit;font-size:16px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink)}.priv-req textarea{min-height:110px}
+
+/* ---------- layout polish (2 Nov 2026) */
+@media (min-width:1281px){.nav ul{gap:14px;font-size:14px}}
+.nav .wrap>.btn{flex:none}
+.nav ul{flex-wrap:nowrap}
+.nav .menu-toggle{min-height:44px;padding:0 18px}
+.ai-free{background:none;padding-block:16px 0}
+.ai-free a{background:var(--saffron-wash);border:1.5px dashed var(--saffron-deep);border-radius:20px;padding:18px 24px;transition:transform .2s ease}
+.ai-free a:hover{transform:translateY(-2px)}
+.ai-free a{justify-items:start}
+.ai-free a>span:nth-child(2){font-size:16.5px;line-height:1.45}
