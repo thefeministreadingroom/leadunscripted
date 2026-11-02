@@ -236,6 +236,12 @@
 <form id="signInForm" class="uf" novalidate style="max-width:460px;margin-top:18px;display:grid;gap:12px"><div class="f"><label for="siEmail">Team email</label><input id="siEmail" type="email" autocomplete="email" required></div><button class="btn btn-primary" type="submit" style="justify-self:start">Email me a sign-in link →</button><p class="reg-msg" id="siMsg" hidden></p></form>
 <script>(function(){var f=document.getElementById('signInForm'),m=document.getElementById('siMsg');f.addEventListener('submit',function(e){e.preventDefault();if(!f.checkValidity()){f.reportValidity();return}var b=f.querySelector('button');b.disabled=true;window.UNS.signIn(document.getElementById('siEmail').value.trim()).then(function(r){m.hidden=false;if(r.error){m.className='reg-msg';m.textContent='That did not work: '+r.error.message}else{m.className='reg-msg ok';m.textContent='Check your inbox for the sign-in link. It opens this page.'}}).finally(function(){b.disabled=false})})})();</script></div>
     <div id="dashMain" hidden>
+<div class="adm-alert" id="admAlert" hidden>
+  <div class="adm-top"><p class="adm-k"><span class="adm-dot" aria-hidden="true"></span><b id="admCount">0</b> <span id="admLbl">new since your last visit</span></p>
+  <div class="adm-acts"><button class="btn btn-line" type="button" id="admNotify" hidden>Turn on desktop alerts</button><button class="btn btn-primary" type="button" id="admSeen">Mark all as seen</button></div></div>
+  <ul class="adm-list" id="admList"></ul>
+</div>
+
       <div class="admin-links">
         <button class="btn btn-primary" type="button" id="aNewDeal">Add a deal</button>
         <a class="btn btn-line" href="#register">Add a registration</a>
@@ -724,7 +730,7 @@
         cap('downloads').then(function(dl){ document.getElementById('dExport').hidden = !dl; document.getElementById('eExport').hidden = !dl });
         var fail = function(){ document.getElementById('dashLocked').hidden = false; document.getElementById('dashMain').hidden = true };
         db.collection('registrations').orderBy('createdAt', 'desc').limit(1000).onSnapshot(function(snap){
-          rows = snap.docs.map(function(d){ return { id: d.id, data: d.data() || {} } }); renderAll();
+          rows = snap.docs.map(function(d){ return { id: d.id, data: d.data() || {} } }); renderAll(); if (window.unsAdminAlerts) window.unsAdminAlerts(rows);
         }, fail);
         db.collection('expenses').orderBy('date', 'desc').limit(1000).onSnapshot(function(snap){
           expenses = snap.docs.map(function(d){ return { id: d.id, data: d.data() || {} } }); renderMoney();
@@ -773,6 +779,47 @@
       .catch(function(){say('Sorry, this did not send. Please email hello@leadunscripted.com and we will help.',false)})
       .then(function(){btn.disabled=false});
   };
+})();
+</script>
+<script>
+// Admin alerts: new entries since this browser last marked them seen.
+window.unsAdminAlerts = (function(){
+  var KEY = 'uns-admin-seen', base = document.title.replace(/^\(\d+\) /, ''), first = true, lastIds = {}, latest = '', all = [];
+  function get(){ try { return localStorage.getItem(KEY) || '' } catch (e) { return '' } }
+  function set(v){ try { localStorage.setItem(KEY, v) } catch (e) {} }
+  function ago(iso){ var m = Math.round((Date.now() - new Date(iso).getTime()) / 60000); if (!(m >= 0)) return ''; if (m < 1) return 'just now'; if (m < 60) return m + ' min ago'; var h = Math.round(m / 60); if (h < 24) return h + ' h ago'; return Math.round(h / 24) + ' d ago' }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c] }) }
+  function render(rows){
+    all = rows || all;
+    var box = document.getElementById('admAlert'); if (!box) return;
+    var seen = get();
+    latest = all.reduce(function(m, r){ var c = r.data.createdAt || ''; return c > m ? c : m }, '');
+    // first visit in this browser: everything not yet contacted counts as new
+    var fresh = all.filter(function(r){ var d = r.data; return seen ? (d.createdAt || '') > seen : (d.status || 'New') === 'New' && d.consent })
+                   .sort(function(a, b){ return (b.data.createdAt || '') < (a.data.createdAt || '') ? -1 : 1 });
+    box.hidden = !fresh.length;
+    document.getElementById('admCount').textContent = fresh.length;
+    document.getElementById('admLbl').textContent = fresh.length === 1 ? 'new entry since your last visit' : 'new entries since your last visit';
+    document.getElementById('admList').innerHTML = fresh.slice(0, 8).map(function(r){ var d = r.data, fee = /^FEE REQUEST/.test(d.trainingTitle || '');
+      return '<li><span>' + (fee ? '<i class="fee">Fee request</i>' : '') + '<b>' + esc(d.name || 'Someone') + '</b> · ' + esc(String(d.trainingTitle || '').replace(/^FEE REQUEST: /, '')) + '</span><small>' + esc(ago(d.createdAt)) + '</small></li>' }).join('')
+      + (fresh.length > 8 ? '<li><span>and ' + (fresh.length - 8) + ' more in Deals</span><small></small></li>' : '');
+    document.title = (fresh.length ? '(' + fresh.length + ') ' : '') + base;
+    var nav = document.querySelector('#adminNavItem a');
+    if (nav) nav.innerHTML = 'Admin' + (fresh.length ? '<span class="adm-badge">' + fresh.length + '</span>' : '');
+    var nb = document.getElementById('admNotify');
+    nb.hidden = !('Notification' in window) || Notification.permission !== 'default';
+    if (!first && 'Notification' in window && Notification.permission === 'granted') {
+      fresh.filter(function(r){ return !lastIds[r.id] }).slice(0, 3).forEach(function(r){
+        try { new Notification('New on Unscripted: ' + (r.data.name || 'someone'), { body: r.data.trainingTitle || '', icon: 'mark-64.png' }) } catch (e) {}
+      });
+    }
+    lastIds = {}; fresh.forEach(function(r){ lastIds[r.id] = 1 }); first = false;
+  }
+  document.addEventListener('click', function(e){
+    if (e.target.id === 'admSeen') { set(latest || new Date().toISOString()); render() }
+    if (e.target.id === 'admNotify' && 'Notification' in window) { Notification.requestPermission().then(function(){ render() }) }
+  });
+  return render;
 })();
 </script>
 </body></html>
